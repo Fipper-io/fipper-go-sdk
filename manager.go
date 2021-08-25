@@ -5,6 +5,7 @@ import (
 	"compress/gzip"
 	"encoding/base64"
 	"encoding/json"
+	"errors"
 	"io/ioutil"
 )
 
@@ -18,6 +19,30 @@ type Flag struct {
 	State bool
 	Type  int
 	Value interface{}
+}
+
+func (f *Flag) GetBool() (bool, error) {
+	val, ok := f.Value.(bool)
+
+	if ok {
+		return val, nil
+	}
+	return false, errors.New("bool type converting error")
+}
+
+func (f *Flag) GetInt() int {
+	return f.Value.(int)
+}
+
+func (f *Flag) GetString() string {
+	return f.Value.(string)
+}
+
+func (f *Flag) GetJson(schema *interface{}) error {
+	if err := json.Unmarshal(f.Value.([]byte), &schema); err == nil {
+		return errors.New("json type converting error")
+	}
+	return nil
 }
 
 type ConfigManager struct {

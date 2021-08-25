@@ -50,7 +50,7 @@ func (fc *FipperClient) GetConfig(environment string, apiToken string, projectId
 			if fc.config != nil {
 				return fc.config, nil
 			}
-			return nil, errors.New("NetworkError")
+			return nil, errors.New("can't fetch config hash")
 		}
 
 		defer resp.Body.Close()
@@ -63,7 +63,7 @@ func (fc *FipperClient) GetConfig(environment string, apiToken string, projectId
 	resp, err := http.Get(getConfigUrl(apiToken, projectId))
 
 	if err != nil {
-		return nil, errors.New("NetworkError")
+		return nil, errors.New("can't fetch config data")
 	}
 	defer resp.Body.Close()
 
@@ -72,11 +72,11 @@ func (fc *FipperClient) GetConfig(environment string, apiToken string, projectId
 		body, err := io.ReadAll(resp.Body)
 
 		if err != nil {
-			return nil, errors.New("NetworkError")
+			return nil, errors.New("can't fetch config data body")
 		}
 
 		if err := json.Unmarshal(body, &rawData); err != nil {
-			return nil, errors.New("NetworkError")
+			return nil, errors.New("can't parse config body")
 		}
 
 		newEtag := rawData["eTag"].(string)
@@ -88,7 +88,7 @@ func (fc *FipperClient) GetConfig(environment string, apiToken string, projectId
 		fc.previousSyncDate = &syncDate
 	} else {
 		if fc.config == nil {
-			return nil, errors.New("NetworkError")
+			return nil, errors.New(fmt.Sprintf("wrong fetch status: %v", resp.StatusCode))
 		}
 	}
 
