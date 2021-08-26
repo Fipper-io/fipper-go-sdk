@@ -12,7 +12,7 @@ Fipper.io - a feature toggle (aka feature flags) software. More info https://fip
 package main
 
 import (
-	"fipper_go_sdk"
+	"github.com/Fipper-io/fipper-go-sdk"
 	"fmt"
 )
 
