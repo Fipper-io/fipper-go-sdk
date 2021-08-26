@@ -4,7 +4,7 @@ A client library for Golang (SDK)
 Fipper.io - a feature toggle (aka feature flags) software. More info https://fipper.io
 
 ## Install
-> go get https://github.com/Fipper-io/fipper-go-sdk
+> go get github.com/Fipper-io/fipper-go-sdk
 
 ## Example
 #### main.go
@@ -12,7 +12,7 @@ Fipper.io - a feature toggle (aka feature flags) software. More info https://fip
 package main
 
 import (
-	"fipper-go-sdk"
+	"fipper_go_sdk"
 	"fmt"
 )
 
