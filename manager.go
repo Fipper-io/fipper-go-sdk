@@ -30,16 +30,21 @@ func (f *Flag) GetBool() (bool, error) {
 	return false, errors.New("bool type converting error")
 }
 
-func (f *Flag) GetInt() int {
-	return f.Value.(int)
+func (f *Flag) GetInt() (int, error) {
+	val, ok := f.Value.(float64)
+
+	if ok {
+		return int(val), nil
+	}
+	return 0, errors.New("int type converting error")
 }
 
-func (f *Flag) GetString() string {
-	return f.Value.(string)
+func (f *Flag) GetString() (string, error) {
+	return f.Value.(string), nil
 }
 
-func (f *Flag) GetJson(schema *interface{}) error {
-	if err := json.Unmarshal(f.Value.([]byte), &schema); err == nil {
+func (f *Flag) GetJson(schema interface{}) error {
+	if err := json.Unmarshal([]byte(f.Value.(string)), &schema); err != nil {
 		return errors.New("json type converting error")
 	}
 	return nil
